@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load  widget_tweaks %}
+{% block content %}
+    <div class="col-md-offset-2">
+        <form class="form-horizontal" action="" method="post">
+            {% csrf_token %}
+            {{ form.non_fields_error }}
+            {% for field in form %}
+                <!-- <div class="row" style="text-align: center">
+                            <div class="col-xs-1">{{ field.label_tag }} </div>
+                            <div class="col-xs-8"> {{ field }}</div>
+
+                    </div>-->
+                <div class="form-group">
+                    {{ field.errors }}
+                    <div class="col-xs-1">{{ field.label_tag }} </div>
+                    <div class="col-xs-7"> {{ field|add_class:"form-control"|attr:"placeholder:وارد کنید" }}</div>
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-7">
+                    <input class="btn btn-primary" type="submit" value="بپرس"  style="float: left">
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+    <div class="panel-group"   id="accordion">
+        {% for question in questions %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">
+                            {{ question.title }}<span style="float:left">{{ question.date }}</span></a>
+                    </h4>
+                </div>
+                <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        {{ question.body }}
+                        <div class="btn-group" style="float:left">
+                            <a href="{% url "update" question.id %}"><button type="button" class="btn btn-warning">ویرایش</button></a>
+                            <a href="{% url "delete" question.id %}"><button type="button" class="btn btn-danger">حذف</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
